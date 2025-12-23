@@ -1,0 +1,39 @@
+﻿@model AgentResultVm
+
+<form method="post">
+    <textarea name="prompt"
+              class="form-control"
+              placeholder="Ask business question"></textarea>
+
+    <button type="submit"
+            class="btn btn-primary mt-2">
+        Generate Report
+    </button>
+</form>
+
+@if (Model != null)
+{
+    <hr />
+
+    <h4>AI Report</h4>
+    <pre>@Model.Report</pre>
+
+    <form asp-controller="Report"
+          asp-action="ExportExcel"
+          method="post">
+        <input type="hidden" name="sql" value="@Model.Sql" />
+        <button class="btn btn-success">
+            Export Excel
+        </button>
+    </form>
+
+    <form asp-controller="Report"
+          asp-action="ExportPdf"
+          method="post"
+          class="mt-1">
+        <input type="hidden" name="sql" value="@Model.Sql" />
+        <button class="btn btn-danger">
+            Export PDF
+        </button>
+    </form>
+}
