@@ -1,0 +1,28 @@
+name: Dev to Release Deploy
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  merge_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Merge dev → release
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+
+        git checkout release || git checkout -b release
+        git merge development --no-ff
+        git push origin release
